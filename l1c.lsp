@@ -1,0 +1,17 @@
+(defun reverseAll(L aux)
+	(COND ((null L) (reverse aux))
+		  ((listp (CAR L)) (APPEND (reverse aux) (CONS (reverseAll (CAR L) nil) (reverseAll (CDR L) nil))))
+		  (T (reverseAll (CDR L) (APPEND aux (list (CAR L)))))
+	)
+)
+
+(defun reverseMain(L)
+	(reverseAll L nil)
+)
+
+(defun testReverse()
+	(assert (equal (reverseMain '(1 2 (4 7 9 (7 6) 3))) '(2 1 (9 7 4 (6 7) 3))))
+	(assert (equal (reverseMain '(a b c (d (e f) g h i))) ' (c b a (d (f e) i h g))))
+	(assert (equal (reverseMain nil) nil))
+	(assert (equal (reverseMain '(1)) '(1)))
+)

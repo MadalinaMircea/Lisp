@@ -1,0 +1,13 @@
+(defun maxValue(L)
+	(COND ((null L) -100000)
+		  ((listp (CAR L)) (maxValue (CDR L)))
+		  (T (max (maxValue (CDR L)) (CAR L)))
+	)
+)
+
+(defun testMaxValue()
+	(assert (= (maxValue '(1 4 10 2)) 10))
+	(assert (= (maxValue '(29 45 (55 2 8) 10 2 33)) 45))
+	(assert (= (maxValue '(0)) 0))
+	(assert (= (maxValue nil) -100000))
+)

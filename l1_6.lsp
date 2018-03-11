@@ -1,0 +1,70 @@
+(defun a(L)
+	(COND 
+		((null L) T)
+		((listp (CAR L)) nil)
+		(T (a (CDR L)))
+	)
+)
+
+(defun b(L E O F)
+	(COND
+		((null L) nil)
+		((AND (equal (CAR L) e) (= F 0)) (CONS O (b (CDR L) E O 1)))
+		(T (CONS (CAR L) (b (CDR L) E O F)))
+	)
+)
+
+(defun getLast(L)
+	(COND
+		((null L) nil)
+		((null (CDR L)) (CAR L))
+		(T (getLast (CDR L)))
+	)
+)
+
+(defun c(L)
+	(COND
+		((null L) nil)
+		((listp (CAR L)) (CONS (getLast (CAR L)) (c (CDR L))))
+		(T (CONS (CAR L) (c (CDR L))))
+	)
+)
+
+(defun d(V W)
+	(COND
+		((AND (null V) (null W)) nil)
+		((AND (null V) (not (NULL W))) W)
+		((AND (null W) (not (NULL V))) V)
+		((< (CAR V) (CAR W)) (CONS (CAR V) (d (CDR V) W)))
+		((< (CAR W) (CAR V)) (CONS (CAR W) (d V (CDR W))))
+		(T (CONS (CAR V) (d (CDR V) (CDR W))))
+	)
+)
+
+(defun testa()
+	(assert (equal (a '(1 2 3)) T))
+	(assert (equal (a '(1 2 (3))) nil))
+	(assert (equal (a nil) T))
+)
+
+(defun testb()
+	(assert (equal (b '(1 2 3) 2 5 0) '(1 5 3)))
+	(assert (equal (b '(5 10 2 5 5 3) 5 0 0) '(0 10 2 5 5 3)))
+	(assert (equal (b '(5 10 2 5 5 3) 6 2 0) '(5 10 2 5 5 3)))
+	(assert (equal (b nil 10 2 0) nil))
+)
+
+(defun testc()
+	(assert (equal (c '(1 2 3)) '(1 2 3)))
+	(assert (equal (c '(a (b c) (d ((e) f)))) ' (a c ((e) f))))
+	(assert (equal (c '(a c ((e) f))) '  (a c f)))
+	(assert (equal (c nil) nil))
+)
+
+(defun testd()
+	(assert (equal (d '(1 2 3) '(4 5 6)) '(1 2 3 4 5 6)))
+	(assert (equal (d '(1 2 3) '(1 2 3)) '(1 2 3)))
+	(assert (equal (d '(1 10 11 25 60) '(1 2 14 19 20 25 70)) '(1 2 10 11 14 19 20 25 60 70)))
+	(assert (equal (d nil '(1)) '(1)))
+	(assert (equal (d nil nil) nil))
+)

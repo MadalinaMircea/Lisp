@@ -1,0 +1,50 @@
+(defun a(L N P)
+	(COND
+		((null L) nil)
+		((= P N) (a (CDR L) N 1))
+		(T (CONS (CAR L) (a (CDR L) N (+ P 1))))
+	)
+)
+(defun maina(L N)
+	(a L N 1)
+)
+
+(defun maximum(L)
+	(COND
+		((null L) nil)
+		((null (CDR L))
+			(COND
+				((listp (CAR L)) (maximum (CAR L)))
+				(T (CAR L))
+			)
+		)
+		((listp (CAR L)) (max (maximum (CAR L)) (maximum (CDR L))))
+		(T (max (CAR L) (maximum (CDR L))))
+	)
+)
+
+(defun removeAll(L E)
+	(COND
+		((null L) nil)
+		((listp (CAR L)) (CONS (removeAll (CAR L) E) (removeAll (CDR L) E)))
+		((equal (CAR L) E) (removeAll (CDR L) E))
+		(T (CONS (CAR L) (removeAll (CDR L) E)))
+	)
+)
+
+(defun d(L)
+	(removeAll L (maximum L))
+)
+
+(defun testa()
+	(assert (equal (maina '(1 2 3 4 5 6 7) 2) '(1 3 5 7)))
+	(assert (equal (maina '(10 5 28 3 33 1) 1) nil))
+	(assert (equal (maina '(10 5 28 3 33 1) 3) '(10 5 3 33)))
+	(assert (equal (maina '(10 5 28 3 33 1) 7) '(10 5 28 3 33 1)))
+)
+
+(defun testd()
+	(assert (equal (d '(1 2 3 4 5 6 7)) '(1 2 3 4 5 6)))
+	(assert (equal (d '(10 33 5 28 3 33 1)) '(10 5 28 3 1)))
+	(assert (equal (d '(11 (1 2 (1 11 3) 2 (11) 11))) '((1 2 (1 3) 2 ()))))
+)
